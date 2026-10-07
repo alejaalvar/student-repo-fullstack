@@ -22,3 +22,36 @@ Input: nums = [3,3], target = 6
 Output: [0,1]
 
 **/
+
+/**
+ * Finds the two indices of a given integer array whose values
+ * sum is the given target integer
+ *
+ * @param {List[int]} nums - the array of integers to search
+ * @param {int} target - the target we are solving for
+ *
+ * @returns {List[int]} The indices array whose sum is the target
+ */
+function twoSum(nums, target) {
+  let res = [];
+  let visitedElements = {};
+
+  for (let i = 0; i < nums.length; i++) {
+    let currentNum = nums[i];
+    let complement = target - currentNum;
+
+    if (visitedElements[complement] !== undefined) {
+      res = [visitedElements[complement], i];
+      break;
+    }
+
+    visitedElements[currentNum] = i;
+  }
+
+  return res;
+}
+
+let nums = [3, 2, 4];
+let target = 6;
+
+console.log(twoSum(nums, target)); // Output: [1, 2]
