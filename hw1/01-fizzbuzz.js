@@ -34,7 +34,7 @@ Output: ["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13"
  * @param {number} n - The given number to count to
  * @returns {List[String]} The string array answer
  */
-function fizzBuzz(n) {
+const fb = function fizzBuzz(n) {
   let answer = [];
   for (let i = 1; i <= n; i++) {
     if (i % 3 === 0 && i % 5 === 0) {
@@ -48,4 +48,22 @@ function fizzBuzz(n) {
     }
   }
   return answer;
+};
+
+// Checking for missing command line arguments or invalid input
+if (process.argv[2] === undefined || isNaN(parseInt(process.argv[2]))) {
+  console.error("Please provide an integer n as a command line argument.");
+  console.error("Usage: node 01-fizzbuzz.js 15");
+  process.exit(1);
 }
+
+// Checking for non-positive integer input
+if (parseInt(process.argv[2]) < 1) {
+  console.error("Please provide a positive integer n greater than 0.");
+  console.error("Usage: node 01-fizzbuzz.js 15");
+  process.exit(1);
+}
+
+const n = parseInt(process.argv[2]);
+console.log(`FizzBuzz for n=${n}:`);
+console.log(fb(n));
