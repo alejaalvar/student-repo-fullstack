@@ -24,23 +24,20 @@ const server = http.createServer((req, res) => {
 
   // welcome
   if (method === "GET" && url === `/${routes[0]}`) {
-    /*
-     * TODO: implement this route
-     */
+    res.writeHead(200, { "content-type": "text/html" });
+    return res.end("<h1>Welcome to hell!</h1>");
   }
 
   // redirect
   if (method === "GET" && url === `/${routes[1]}`) {
-    /*
-     * TODO: implement this route
-     */
+    res.writeHead(302, { location: `/${routes[2]}` });
+    return res.end();
   }
 
   // redirected
   if (method === "GET" && url === `/${routes[2]}`) {
-    /*
-     * TODO: implement this route
-     */
+    res.writeHead(200, { "content-type": "text/html" });
+    return res.end("<h1>Redirected back to hell. There is no escape.</h1>");
   }
 
   // cache
@@ -57,12 +54,9 @@ const server = http.createServer((req, res) => {
      */
   }
 
+  // This will catch any unspecified route
   res.writeHead(404, { "content-type": "text/html" });
   res.end("<h1>404 - Whoops! Page not found!</h1>");
-
-  res.writeHead(200, { "Content-Type": "text/html" });
-  res.write("Node Routing Exercise");
-  res.end();
 });
 
 server.listen(port, () => {
