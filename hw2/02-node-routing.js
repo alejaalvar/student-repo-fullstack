@@ -1,4 +1,4 @@
-const http = require('http');
+const http = require("http");
 const port = process.env.PORT || 5001;
 
 // http://localhost:5001/welcome should return a status code 200 with a welcome message of your choice in html format
@@ -13,16 +13,55 @@ const port = process.env.PORT || 5001;
 
 const server = http.createServer((req, res) => {
   const routes = [
-    'welcome',
-    'redirect',
-    'redirected',
-    'cache',
-    'cookie',
-    'other',
+    "welcome",
+    "redirect",
+    "redirected",
+    "cache",
+    "cookie",
+    "other",
   ];
+  const { method, url } = req;
 
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.write('Node Routing Exercise');
+  // welcome
+  if (method === "GET" && url === `/${routes[0]}`) {
+    /*
+     * TODO: implement this route
+     */
+  }
+
+  // redirect
+  if (method === "GET" && url === `/${routes[1]}`) {
+    /*
+     * TODO: implement this route
+     */
+  }
+
+  // redirected
+  if (method === "GET" && url === `/${routes[2]}`) {
+    /*
+     * TODO: implement this route
+     */
+  }
+
+  // cache
+  if (method === "GET" && url === `/${routes[3]}`) {
+    /*
+     * TODO: implement this route
+     */
+  }
+
+  // cookie
+  if (method === "GET" && url === `/${routes[4]}`) {
+    /*
+     * TODO: implement this route
+     */
+  }
+
+  res.writeHead(404, { "content-type": "text/html" });
+  res.end("<h1>404 - Whoops! Page not found!</h1>");
+
+  res.writeHead(200, { "Content-Type": "text/html" });
+  res.write("Node Routing Exercise");
   res.end();
 });
 
