@@ -42,16 +42,17 @@ const server = http.createServer((req, res) => {
 
   // cache
   if (method === "GET" && url === `/${routes[3]}`) {
-    /*
-     * TODO: implement this route
-     */
+    res.writeHead(200, {
+      "content-type": "text/html",
+      "cache-control": "public, max-age=86400",
+    });
+    return res.end("<h1>This resource was cached.</h1>");
   }
 
   // cookie
   if (method === "GET" && url === `/${routes[4]}`) {
-    /*
-     * TODO: implement this route
-     */
+    res.writeHead(200, { "content-type": "text", cookie: "hello=world" });
+    return res.end("cookies..... yummmmmmmm");
   }
 
   // This will catch any unspecified route
