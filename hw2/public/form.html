@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Exercise</title>
+  </head>
+  <body>
+    <h1>Sign Up</h1>
+
+    <!--
+      The browser encodes the fields as application/x-www-form-urlencoded and
+      POSTs them to /submit, where express.urlencoded() parses them into req.body.
+      Each input's "name" attribute becomes the key in req.body.
+    -->
+    <form action="/submit" method="POST">
+      <p>
+        <label for="username">Username</label><br />
+        <input type="text" id="username" name="username" required />
+      </p>
+
+      <p>
+        <label for="email">Email</label><br />
+        <input type="email" id="email" name="email" required />
+      </p>
+
+      <p>
+        <label for="comments">Comments</label><br />
+        <textarea id="comments" name="comments" rows="4" cols="40"></textarea>
+      </p>
+
+      <p>
+        <!-- Unchecked checkboxes are omitted from the request entirely. -->
+        <input type="checkbox" id="newsletter" name="newsletter" value="yes" />
+        <label for="newsletter">Sign me up for the newsletter</label>
+      </p>
+
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
