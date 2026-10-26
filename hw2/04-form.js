@@ -53,7 +53,7 @@ app.get("/form", (req, res) => {
 
 // /submit should return all the data the user entered
 app.post("/submit", (req, res) => {
-  const { username, email, comments, newsletter } = req.body;
+  const { username, email, comments, newsletter } = req.body || {};
 
   // A checkbox is only included in the request when it is checked, so its
   // presence alone tells us whether the user signed up.
