@@ -30,7 +30,7 @@ const calculateChange = function calculateChangeNeededGivenDollars(dollars) {
   }
 
   let convertDollarsToCents = dollarsRounded * 100;
-  const dollarCoins = Math.trunc(convertDollarsToCents / 100);
+  const numDollarCoins = Math.trunc(convertDollarsToCents / 100);
   convertDollarsToCents = convertDollarsToCents % 100;
 
   const numQuarters = Math.trunc(convertDollarsToCents / 25);
@@ -45,8 +45,36 @@ const calculateChange = function calculateChangeNeededGivenDollars(dollars) {
   // At this point we are left with the leftover change
   const numPennies = convertDollarsToCents;
 
-  console.log(`Converting $${dollarsRounded} into coins...`);
-  return `${dollarCoins} dollars, ${numQuarters} quarters, ${numDimes} dimes, ${numNickels} nickels, ${numPennies} pennies`;
+  // We we will build up our result string and store it here
+  let result = `$${dollarsRounded} ==> `;
+
+  // Resolve the plurality for our result string (e.g., 1 penny vs 2 pennies)
+  // The intuition: we start with the base of the word, e.g., 'dollar'
+  // and then we can check if we have more than one of that coin. If
+  // we have only 1, we don't want to add an ending. If we have more
+  // than one coin though, we can add the appropriate ending.
+  // Credit for this block of logic goes to Danner Snow
+  if (numDollarCoins > 0) {
+    result += `${numDollarCoins} dollar${numDollarCoins != 1 ? "s" : ""}, `;
+  }
+  if (numQuarters > 0) {
+    result += `${numQuarters} quarter${numQuarters != 1 ? "s" : ""}, `;
+  }
+  if (numDimes > 0) {
+    result += `${numDimes} dime${numDimes != 1 ? "s" : ""}, `;
+  }
+  if (numNickels > 0) {
+    result += `${numNickels} nickel${numNickels != 1 ? "s" : ""}, `;
+  }
+  if (numPennies > 0) {
+    result += `${numPennies} penn${numPennies != 1 ? "ies" : "y"}`;
+  }
+
+  // If there are no pennies for a particular case, then
+  // it is possible to have a trailing comma and space, so
+  // we remove it before returning the result
+  result = result.replace(/, $/, "");
+  return result;
 };
 
 // ===== Test Cases =====
