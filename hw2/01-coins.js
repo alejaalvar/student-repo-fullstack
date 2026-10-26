@@ -25,24 +25,24 @@ const calculateChange = function calculateChangeNeededGivenDollars(dollars) {
     return "Error: dollar amount must be positive";
   }
 
-  let convert_dollars_to_cents = dollarsRounded * 100;
-  const dollar_coins = Math.trunc(convert_dollars_to_cents / 100);
-  convert_dollars_to_cents = convert_dollars_to_cents % 100;
+  let convertDollarsToCents = dollarsRounded * 100;
+  const dollarCoins = Math.trunc(convertDollarsToCents / 100);
+  convertDollarsToCents = convertDollarsToCents % 100;
 
-  const num_quarters = Math.trunc(convert_dollars_to_cents / 25);
-  convert_dollars_to_cents = convert_dollars_to_cents % 25;
+  const numQuarters = Math.trunc(convertDollarsToCents / 25);
+  convertDollarsToCents = convertDollarsToCents % 25;
 
-  const num_dimes = Math.trunc(convert_dollars_to_cents / 10);
-  convert_dollars_to_cents = convert_dollars_to_cents % 10;
+  const numDimes = Math.trunc(convertDollarsToCents / 10);
+  convertDollarsToCents = convertDollarsToCents % 10;
 
-  const num_nickels = Math.trunc(convert_dollars_to_cents / 5);
-  convert_dollars_to_cents = convert_dollars_to_cents % 5;
+  const numNickels = Math.trunc(convertDollarsToCents / 5);
+  convertDollarsToCents = convertDollarsToCents % 5;
 
   // At this point we are left with the leftover change
-  const num_pennies = convert_dollars_to_cents;
+  const numPennies = convertDollarsToCents;
 
   console.log(`Converting ${dollarsRounded} into coins...`);
-  return `${dollar_coins} dollars, ${num_quarters} quarters, ${num_dimes} dimes, ${num_nickels} nickels, ${num_pennies} pennies`;
+  return `${dollarCoins} dollars, ${numQuarters} quarters, ${numDimes} dimes, ${numNickels} nickels, ${numPennies} pennies`;
 };
 
 // ===== Test Cases =====
