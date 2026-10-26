@@ -51,8 +51,11 @@ const server = http.createServer((req, res) => {
 
   // cookie
   if (method === "GET" && url === `/${routes[4]}`) {
-    res.writeHead(200, { "content-type": "text", cookie: "hello=world" });
-    return res.end("cookies..... yummmmmmmm");
+    res.writeHead(200, {
+      "content-type": "text/plain",
+      "set-cookie": "hello=world",
+    });
+    return res.end("cookies... yummm");
   }
 
   // This will catch any unspecified route
