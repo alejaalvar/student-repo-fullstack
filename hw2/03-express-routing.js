@@ -27,39 +27,39 @@ app.get("/", (req, res) => {
   res.send("Express Routing Exercise");
 });
 
-app.get("/welcome", (req, res) => {
+app.get(`/${routes[0]}`, (req, res) => {
   res.status(200);
   res.set({ "Content-Type": "text/html" });
   res.send("<h1>We made it to purgatory!</h1>");
 });
 
-app.get("/redirect", (req, res) => {
+app.get(`/${routes[1]}`, (req, res) => {
   res.status(302);
   res.redirect("/redirected");
 });
 
-app.get("/redirected", (req, res) => {
+app.get(`/${routes[2]}`, (req, res) => {
   res.status(200);
   res.set({ "Content-Type": "text/html" });
   res.send("<h1>Uno reverse on ya</h1>");
 });
 
-app.get("/cache", (req, res) => {
+app.get(`/${routes[3]}`, (req, res) => {
   res.status(200);
   res.set({
     "Content-Type": "text/html",
     "Cache-Control": "public, max-age=86400",
   });
-  res.send("<h1>resource was cached</h1>");
+  res.send("<h1>This resource was cached</h1>");
 });
 
-app.get("/cookie", (req, res) => {
+app.get(`/${routes[4]}`, (req, res) => {
   res.status(200);
   res.set({
     "Content-Type": "text/plain",
     "Set-Cookie": "hello=world",
   });
-  res.send("cookies... yumm");
+  res.send("cookies... yummm");
 });
 
 app.use((req, res) => {
