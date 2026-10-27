@@ -1,3 +1,8 @@
+/*
+ * Simple chat application using socketio, based on the
+ * socketio tutorial.
+ */
+
 const express = require("express");
 const app = express();
 const http = require("http");
@@ -10,6 +15,10 @@ const port = 3000;
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
+});
+
+app.get("/styles.css", (req, res) => {
+  res.sendFile(__dirname + "/styles.css");
 });
 
 io.on("connection", (socket) => {
