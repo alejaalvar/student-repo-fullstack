@@ -1,4 +1,12 @@
 extends layout
 block content
     h1= title
-    p Welcome to the populous route
+    p Countries with a population of at least 50 million, most populous first
+    each country in countries
+        article.card
+            if country.flag
+                img(src=country.flag alt=`Flag of ${country.name}` width="160")
+            else
+                p Flag unavailable
+            h2= country.name
+            p Population: #{country.population}

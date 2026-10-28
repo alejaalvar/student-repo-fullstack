@@ -96,8 +96,24 @@ app.get("/countries", async (req, res) => {
   res.render("countries", { title: "Countries", countries: list });
 });
 
-app.get("/populous", (req, res) => {
-  res.render("populous", { title: "Populous" });
+app.get("/populous", async (req, res) => {
+  const countries = await getAllCountries();
+
+  const list = countries
+    .filter((country) => country.population >= 50_000_000)
+
+    // Sort descending so the most populous country comes first
+    .sort((a, b) => b.population - a.population)
+    .map((country) => ({
+      name: country.names.common,
+      population: country.population.toLocaleString("en-US"),
+
+      // Some countries come back with empty flag urls, so fall
+      // back to the png and then to no flag at all
+      flag: country.flag?.url_svg || country.flag?.url_png || null,
+    }));
+
+  res.render("populous", { title: "Populous", countries: list });
 });
 
 app.get("/regions", (req, res) => {
