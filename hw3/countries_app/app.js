@@ -32,7 +32,7 @@ let cachedCountries = null;
  *
  * {Promise<Country[]>} All countries returned by the API.
  */
-async function getAllCountries() {
+const getAllCountries = async function fetchAllCountriesFromAPI() {
   if (cachedCountries) {
     return cachedCountries;
   }
@@ -60,7 +60,7 @@ async function getAllCountries() {
   }
   cachedCountries = allCountries;
   return allCountries;
-}
+};
 
 app.get("/", (req, res) => {
   res.redirect("/home");
