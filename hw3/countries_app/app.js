@@ -1,3 +1,10 @@
+/**
+ * A simple pug app that fetches data from the countries API
+ * and displays all countries on one page, countries with a
+ * population over 50 million on another, and regional country
+ * information on a third page.
+ */
+
 const express = require("express");
 const app = express();
 
@@ -9,6 +16,9 @@ const apiKey = process.env.REST_COUNTRIES_KEY;
 if (!apiKey)
   throw new Error("REST_COUNTRIES_KEY is not set. Did you create .env?");
 let cachedCountries = null;
+
+// How long to wait on each API request before giving up
+const requestTimeoutMs = 10_000;
 
 /**
  * @typedef {Object} Leader
@@ -51,8 +61,22 @@ const getAllCountries = async function fetchAllCountriesFromAPI() {
   while (more) {
     const response = await fetch(
       `https://api.restcountries.com/countries/v5?limit=100&offset=${offset}`,
-      { headers: { Authorization: `Bearer ${apiKey}` } },
+      {
+        headers: { Authorization: `Bearer ${apiKey}` },
+
+        // Without a timeout a hung API would leave the page loading forever.
+        // When the timeout fires, fetch rejects and the error handler takes over
+        signal: AbortSignal.timeout(requestTimeoutMs),
+      },
     );
+
+    // Error responses (bad key, rate limit, outage) don't include
+    // the data attribute, so fail here with a useful message
+    if (!response.ok) {
+      throw new Error(
+        `REST Countries API request failed: ${response.status} ${response.statusText}`,
+      );
+    }
     const json = await response.json();
     allCountries.push(...json.data.objects);
     more = json.data.meta.more;
@@ -81,7 +105,7 @@ app.get("/countries", async (req, res) => {
 
       return {
         name: country.names.common,
-        capital: country.capitals[0]?.name ?? "No capital",
+        capital: country.capitals?.[0]?.name ?? "No capital",
         leader:
           leaderNames.length > 0
             ? leaderNames.join(", ")
@@ -137,6 +161,25 @@ app.get("/regions", async (req, res) => {
     .sort((a, b) => a.name.localeCompare(b.name));
 
   res.render("regions", { title: "Regions", regions });
+});
+
+// Runs only when no route above matched the request
+app.use((req, res) => {
+  res.status(404).render("error", {
+    title: "Not Found",
+    message: `The page ${req.originalUrl} does not exist.`,
+  });
+});
+
+// Express 5 forwards errors thrown in async routes here automatically.
+// The four arguments are how Express recognizes an error handler
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).render("error", {
+    title: "Server Error",
+    message: "Something went wrong loading country data. Please try again later.",
+  });
 });
 
 app.listen(port, () => console.log(`${url}:${port}`));
