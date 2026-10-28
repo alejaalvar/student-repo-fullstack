@@ -1,4 +1,8 @@
 extends layout
 block content
     h1= title
-    p Welcome to the countries route
+    ul
+        each country in countries
+            li
+                strong= country.name
+                |  — Capital: #{country.capital} — Leader: #{country.leader}
