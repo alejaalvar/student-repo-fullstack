@@ -21,6 +21,12 @@ app.get("/styles.css", (req, res) => {
   res.sendFile(__dirname + "/styles.css");
 });
 
+// Runs only when no route above matched the request. Socket.IO
+// handles /socket.io/ requests itself, so they never reach this
+app.use((req, res) => {
+  res.status(404).sendFile(__dirname + "/404.html");
+});
+
 io.on("connection", (socket) => {
   socket.on("chat message", (msg) => {
     io.emit("chat message", msg);
