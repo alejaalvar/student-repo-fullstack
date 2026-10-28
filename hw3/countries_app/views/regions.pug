@@ -1,4 +1,9 @@
 extends layout
 block content
     h1= title
-    p Welcome to the regions route
+    each region in regions
+        section
+            h2 #{region.name} (#{region.count} countries)
+            ul
+                each country in region.countries
+                    li= country

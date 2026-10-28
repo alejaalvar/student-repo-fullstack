@@ -116,8 +116,27 @@ app.get("/populous", async (req, res) => {
   res.render("populous", { title: "Populous", countries: list });
 });
 
-app.get("/regions", (req, res) => {
-  res.render("regions", { title: "Regions" });
+app.get("/regions", async (req, res) => {
+  const countries = await getAllCountries();
+
+  // Group country names by region. Countries missing a region
+  // are kept under a fallback key instead of being dropped
+  const groups = countries.reduce((acc, country) => {
+    const region = country.region?.trim() || "Unknown region";
+    const name = country.names?.common ?? "Unnamed country";
+    (acc[region] ??= []).push(name);
+    return acc;
+  }, {});
+
+  const regions = Object.entries(groups)
+    .map(([name, countryNames]) => ({
+      name,
+      count: countryNames.length,
+      countries: countryNames.sort((a, b) => a.localeCompare(b)),
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  res.render("regions", { title: "Regions", regions });
 });
 
 app.listen(port, () => console.log(`${url}:${port}`));
