@@ -21,16 +21,17 @@ let cachedCountries = null;
 const requestTimeoutMs = 10_000;
 
 /**
- * @typedef {Object} Leader
+ * @typedef {Object} Currency
+ * @property {string} code
  * @property {string} [name]
- * @property {string} [title]
+ * @property {string} [symbol]
  */
 
 /**
  * @typedef {Object} Country
  * @property {{ common: string, official: string }} names
  * @property {{ name: string }[]} capitals
- * @property {Leader[]} [leaders]
+ * @property {Currency[]} [currencies]
  * @property {string} region
  * @property {number} population
  * @property {{ url_png: string, url_svg: string }} flag
@@ -99,17 +100,23 @@ app.get("/countries", async (req, res) => {
 
   const list = countries
     .map((country) => {
-      const leaderNames = (country.leaders ?? [])
-        .filter((leader) => leader.name)
-        .map((leader) => `${leader.title} ${leader.name}`);
+      // Some countries use more than one currency, and a few
+      // territories (e.g. Antarctica) have none at all
+      const currencyNames = (country.currencies ?? [])
+        .filter((currency) => currency.name)
+        .map((currency) =>
+          currency.symbol
+            ? `${currency.name} (${currency.symbol})`
+            : currency.name,
+        );
 
       return {
         name: country.names.common,
         capital: country.capitals?.[0]?.name ?? "No capital",
-        leader:
-          leaderNames.length > 0
-            ? leaderNames.join(", ")
-            : "Leader unavailable",
+        currency:
+          currencyNames.length > 0
+            ? currencyNames.join(", ")
+            : "No currency",
       };
     })
 

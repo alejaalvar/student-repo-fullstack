@@ -26,7 +26,7 @@ An Express app using Pug templates that fetches country data from the [REST Coun
 | Route | Description |
 | --- | --- |
 | `/home` | Welcome page (`/` redirects here) |
-| `/countries` | All countries in alphabetical order, with their capitals and leaders (with title) |
+| `/countries` | All countries in alphabetical order, with their capitals and currencies (name and symbol) |
 | `/populous` | Countries with a population of at least 50 million, most populous first, with their flags |
 | `/regions` | Number of countries and the names of each country in every region |
 
