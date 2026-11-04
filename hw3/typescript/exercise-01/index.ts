@@ -17,9 +17,9 @@ export const users: User[] = [
   },
 ];
 
-export function logPerson(user: User) {
+export const logPerson = (user: User) => {
   console.log(` - ${user.name}, ${user.age}`);
-}
+};
 
 console.log("Users:");
 users.forEach(logPerson);

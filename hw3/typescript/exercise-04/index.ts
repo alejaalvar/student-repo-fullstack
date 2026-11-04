@@ -43,15 +43,13 @@ export const persons: Person[] = [
   { type: "admin", name: "Bruce Willis", age: 64, role: "World saver" },
 ];
 
-export function isAdmin(person: Person): person is Admin {
-  return person.type === "admin";
-}
+export const isAdmin = (person: Person): person is Admin =>
+  person.type === "admin";
 
-export function isUser(person: Person): person is User {
-  return person.type === "user";
-}
+export const isUser = (person: Person): person is User =>
+  person.type === "user";
 
-export function logPerson(person: Person) {
+export const logPerson = (person: Person) => {
   let additionalInformation: string = "";
   if (isAdmin(person)) {
     additionalInformation = person.role;
@@ -60,7 +58,7 @@ export function logPerson(person: Person) {
     additionalInformation = person.occupation;
   }
   console.log(` - ${person.name}, ${person.age}, ${additionalInformation}`);
-}
+};
 
 console.log("Admins:");
 persons.filter(isAdmin).forEach(logPerson);

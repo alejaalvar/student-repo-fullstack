@@ -31,7 +31,9 @@ interface Admin {
   role: string;
 }
 
-type PowerUser = Omit<User & Admin, "type"> & {
+// Omit "type" from each side before intersecting: User & Admin would give
+// type: "user" & "admin" (never), collapsing the whole intersection to never.
+type PowerUser = Omit<User, "type"> & Omit<Admin, "type"> & {
   type: "powerUser";
 };
 
@@ -56,19 +58,14 @@ export const persons: Person[] = [
   },
 ];
 
-function isAdmin(person: Person): person is Admin {
-  return person.type === "admin";
-}
+const isAdmin = (person: Person): person is Admin => person.type === "admin";
 
-function isUser(person: Person): person is User {
-  return person.type === "user";
-}
+const isUser = (person: Person): person is User => person.type === "user";
 
-function isPowerUser(person: Person): person is PowerUser {
-  return person.type === "powerUser";
-}
+const isPowerUser = (person: Person): person is PowerUser =>
+  person.type === "powerUser";
 
-export function logPerson(person: Person) {
+export const logPerson = (person: Person) => {
   let additionalInformation: string = "";
   if (isAdmin(person)) {
     additionalInformation = person.role;
@@ -80,7 +77,7 @@ export function logPerson(person: Person) {
     additionalInformation = `${person.role}, ${person.occupation}`;
   }
   console.log(`${person.name}, ${person.age}, ${additionalInformation}`);
-}
+};
 
 console.log("Admins:");
 persons.filter(isAdmin).forEach(logPerson);

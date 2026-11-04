@@ -57,36 +57,35 @@ export const persons: Person[] = [
   { type: "admin", name: "Agent Smith", age: 23, role: "Anti-virus engineer" },
 ];
 
-export function logPerson(person: Person) {
+export const logPerson = (person: Person) => {
   console.log(
     ` - ${person.name}, ${person.age}, ${person.type === "admin" ? person.role : person.occupation}`,
   );
-}
+};
 
-export function filterPersons(
+// Extract picks the member of the Person union whose `type` matches T
+// (e.g. PersonOfType<"user"> is User).
+type PersonOfType<T extends Person["type"]> = Extract<Person, { type: T }>;
+
+// Omit removes "type" so it can't be passed as a filter criterion.
+type Criteria<T extends Person["type"]> = Partial<Omit<PersonOfType<T>, "type">>;
+
+export const getObjectKeys = <T extends object>(obj: T) =>
+  Object.keys(obj) as (keyof T)[];
+
+export const filterPersons = <T extends Person["type"]>(
   persons: Person[],
-  personType: User["type"],
-  criteria: Partial<User>,
-): User[];
-export function filterPersons(
-  persons: Person[],
-  personType: Admin["type"],
-  criteria: Partial<Admin>,
-): Admin[];
-export function filterPersons(
-  persons: Person[],
-  personType: Person["type"],
-  criteria: Partial<Person>,
-): Person[] {
-  return persons
-    .filter((person) => person.type === personType)
+  personType: T,
+  criteria: Criteria<T>,
+): PersonOfType<T>[] =>
+  persons
+    .filter((person): person is PersonOfType<T> => person.type === personType)
     .filter((person) => {
-      let criteriaKeys = Object.keys(criteria) as (keyof Person)[];
+      const criteriaKeys = getObjectKeys(criteria);
       return criteriaKeys.every((fieldName) => {
         return person[fieldName] === criteria[fieldName];
       });
     });
-}
 
 export const usersOfAge23 = filterPersons(persons, "user", { age: 23 });
 export const adminsOfAge23 = filterPersons(persons, "admin", { age: 23 });

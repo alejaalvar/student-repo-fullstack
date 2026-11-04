@@ -81,7 +81,7 @@ export const isAdmin = (person: Person): person is Admin =>
 export const isUser = (person: Person): person is User =>
   person.type === "user";
 
-export function logPerson(person: Person) {
+export const logPerson = (person: Person) => {
   let additionalInformation = "";
   if (isAdmin(person)) {
     additionalInformation = person.role;
@@ -90,19 +90,21 @@ export function logPerson(person: Person) {
     additionalInformation = person.occupation;
   }
   console.log(` - ${person.name}, ${person.age}, ${additionalInformation}`);
-}
+};
 
-export function filterUsers(
+// Omit removes "type" so it can't be passed as a filter criterion.
+type UserCriteria = Partial<Omit<User, "type">>;
+
+export const filterUsers = (
   persons: Person[],
-  criteria: Partial<User>,
-): User[] {
-  return persons.filter(isUser).filter((user) => {
-    const criteriaKeys = Object.keys(criteria) as (keyof User)[];
+  criteria: UserCriteria,
+): User[] =>
+  persons.filter(isUser).filter((user) => {
+    const criteriaKeys = Object.keys(criteria) as (keyof UserCriteria)[];
     return criteriaKeys.every((fieldName) => {
       return user[fieldName] === criteria[fieldName];
     });
   });
-}
 
 console.log("Users of age 23:");
 

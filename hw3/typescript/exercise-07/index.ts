@@ -38,15 +38,15 @@ interface Admin {
   role: string;
 }
 
-function logUser(user: User) {
+const logUser = (user: User) => {
   const pos = users.indexOf(user) + 1;
   console.log(` - #${pos} User: ${user.name}, ${user.age}, ${user.occupation}`);
-}
+};
 
-function logAdmin(admin: Admin) {
+const logAdmin = (admin: Admin) => {
   const pos = admins.indexOf(admin) + 1;
   console.log(` - #${pos} Admin: ${admin.name}, ${admin.age}, ${admin.role}`);
-}
+};
 
 const admins: Admin[] = [
   {
@@ -78,43 +78,44 @@ const users: User[] = [
   },
 ];
 
-export function swap<Type1, Type2>(v1: Type1, v2: Type2): [Type2, Type1] {
-  return [v2, v1];
-}
+export const swap = <Type1, Type2>(v1: Type1, v2: Type2): [Type2, Type1] => [
+  v2,
+  v1,
+];
 
-function test1() {
+const test1 = () => {
   console.log("test1:");
   const [secondUser, firstAdmin] = swap(admins[0], users[1]);
   logUser(secondUser);
   logAdmin(firstAdmin);
-}
+};
 
-function test2() {
+const test2 = () => {
   console.log("test2:");
   const [secondAdmin, firstUser] = swap(users[0], admins[1]);
   logAdmin(secondAdmin);
   logUser(firstUser);
-}
+};
 
-function test3() {
+const test3 = () => {
   console.log("test3:");
   const [secondUser, firstUser] = swap(users[0], users[1]);
   logUser(secondUser);
   logUser(firstUser);
-}
+};
 
-function test4() {
+const test4 = () => {
   console.log("test4:");
   const [firstAdmin, secondAdmin] = swap(admins[1], admins[0]);
   logAdmin(firstAdmin);
   logAdmin(secondAdmin);
-}
+};
 
-function test5() {
+const test5 = () => {
   console.log("test5:");
   const [stringValue, numericValue] = swap(123, "Hello World");
   console.log(` - String: ${stringValue}`);
   console.log(` - Numeric: ${numericValue}`);
-}
+};
 
 [test1, test2, test3, test4, test5].forEach((test) => test());
